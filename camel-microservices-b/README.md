@@ -4,7 +4,7 @@ The micro-service has a set of routes and acts a producer and consumer for other
 
 ## Steps to run the service
 - Clone the project
-- `cd ~/camel-microservices-a`
+- `cd ~/camel-microservices-b`
 - `./gradlew clean build`
 - `./gradlew bootRun`
 
