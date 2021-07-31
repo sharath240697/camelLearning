@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * The route subscribes to the activemq queue named "currency-queue".
+ * The route subscribes to the activemq queue named "currencyExchange-queue".
  * And converts currency json to currency beans
  *
  * The input json format must be as shown
