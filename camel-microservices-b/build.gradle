@@ -21,6 +21,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "org.apache.camel.springboot:camel-spring-boot-starter:${camelVersion}"
 	implementation "org.apache.camel.springboot:camel-activemq-starter:${camelVersion}"
+	implementation "org.apache.camel:camel-jackson:${camelVersion}"
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
