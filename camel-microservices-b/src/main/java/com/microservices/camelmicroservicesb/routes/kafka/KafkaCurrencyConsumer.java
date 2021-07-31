@@ -1,4 +1,4 @@
-package com.microservices.camelmicroservicesb.routes.activeMq.constantMessageConsumer;
+package com.microservices.camelmicroservicesb.routes.kafka;
 
 import com.microservices.camelmicroservicesb.beans.CurrencyExchange;
 import com.microservices.camelmicroservicesb.beans.processors.ProcessCurrencyExchange;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class ActiveMqCurrencyConsumer extends RouteBuilder {
+public class KafkaCurrencyConsumer extends RouteBuilder {
 
     @Autowired
     ProcessCurrencyExchange processCurrencyExchange;
@@ -36,11 +36,9 @@ public class ActiveMqCurrencyConsumer extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("activemq:currencyExchange-queue")
+        from("kafka:currencyExchange-topic")
                 .unmarshal().json(JsonLibrary.Jackson, CurrencyExchange.class)
                 .bean("processCurrencyExchange")
                 .bean("transformCurrencyExchange");
-
-
     }
 }

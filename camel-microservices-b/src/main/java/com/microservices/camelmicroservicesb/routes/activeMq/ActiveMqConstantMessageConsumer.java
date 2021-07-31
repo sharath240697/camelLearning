@@ -1,4 +1,4 @@
-package com.microservices.camelmicroservicesb.routes.activeMq.constantMessageConsumer;
+package com.microservices.camelmicroservicesb.routes.activeMq;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
