@@ -5,7 +5,15 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+/**
+ * The route logs the time string continuously
+ * using timer and logger end points.
+ *
+ * the route can be disabled or enable by commenting/uncommenting the @Component
+ * annotation.
+ */
+
+// @Component
 public class firstTimerRoute extends RouteBuilder {
 
     @Autowired
