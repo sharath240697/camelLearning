@@ -1,0 +1,74 @@
+version: '3.9'
+services:
+#   Infrastructure Components
+  zookeeper:
+    image: zookeeper:3.4.14
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+    expose:
+      - "2181"
+  kafka:
+      image: 'wurstmeister/kafka'
+      environment:
+        KAFKA_ADVERTISED_HOST_NAME: kafka
+        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+        KAFKA_CREATE_TOPICS_SEPARATOR: "$$'\n'"
+
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      ports:
+        - "9092:9092"
+      expose:
+        - "9092"
+      depends_on:
+        - zookeeper
+
+  activeMq:
+    image: rmohr/activemq
+    ports:
+      - 61616:61616
+      - 8161:8161
+    expose:
+      - 8161
+
+    # Utility service to view kafka topics
+  akhq:
+        image: tchiotludo/akhq
+        environment:
+          AKHQ_CONFIGURATION: |
+            akhq:
+              connections:
+                docker-kafka-server:
+                  properties:
+                    bootstrap.servers: "kafka:9092"
+          JAVA_OPTS: -Duser.timezone=Europe/Paris
+        ports:
+          - 8080:8080
+
+#  # This "container" is a workaround to pre-create topics
+  kafka-setup:
+    image: confluentinc/cp-kafka:5.1.1
+    hostname: kafka-setup
+    container_name: kafka-setup
+    depends_on:
+      - kafka
+    volumes:
+      - $PWD/connectors:/tmp/connectors
+      - $PWD/dashboard:/tmp/dashboard
+    command: "bash -c 'echo Waiting for Kafka to be ready... && \
+                       cub kafka-ready -b kafka:9092 1 20 && \
+                       kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 --replication-factor 1 --topic   currencyExchange-topic && \
+                       kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 --replication-factor 1 --topic orders
+                       echo Waiting 60 seconds for Connect to be ready... && \
+                       sleep 60 && \
+                       echo Waiting 90 seconds for Elasticsearch and Kibana to be ready... && \
+                       sleep 90 && \
+                       /tmp/dashboard/docker-combined.sh'"
+    environment:
+      # The following settings are listed here only to satisfy the image's requirements.
+      # We override the image's `command` anyways, hence this container will not start a broker.
+      KAFKA_BROKER_ID: ignored
+      KAFKA_ZOOKEEPER_CONNECT: ignored

@@ -12,6 +12,4 @@ Repeat the steps for each micro-services to start all the services.
 
 ## Pre-requisites
 - Docker must be installed
-- ActiveMq should be running
-   * to run activeMq container, 
-     run docker command `docker run --name activeMq -d -p 61616:61616 -p 8161:8161 rmohr/activemq`
+- The infrastructure should be set up by running `docker-compose up`
