@@ -1,3 +1,12 @@
 spring:
   activemq:
     broker-url: tcp://localhost:61616
+
+server:
+  port: 8083
+
+camel:
+  component:
+    kafka:
+      brokers: localhost:9092
+
